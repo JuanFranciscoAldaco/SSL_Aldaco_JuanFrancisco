@@ -1,3 +1,3 @@
-# 00-CHelloWorld
+# SSL 
 
-Primer programa en C: Hello World.
+Este es mi repositorio para la cursada de Sintaxis y Semántica de Lenguajes
