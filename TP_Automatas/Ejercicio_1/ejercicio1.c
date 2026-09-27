@@ -104,7 +104,7 @@ void reconocer(char* valor, FILE* f_salida, int* cant_oct, int* cant_deci, int* 
     while(1){
         switch(estado){
             case INICIO:
-                if(valor[i] == '0')                                                     // ¿El primer caracter es un 0?
+                if(valor[i] == '0')                                                  
                     estado = OCTAL_O_HEXA;                                          
                 else if(isdigit(valor[i]))                           // isdigit evalua si es un caracter numerico.
                     estado = CONSTANTE_DECIMAL;               
@@ -112,15 +112,15 @@ void reconocer(char* valor, FILE* f_salida, int* cant_oct, int* cant_deci, int* 
                     estado = DECIMAL_NEGATIVO;
                 }
                 else
-                    estado = DESCONOCIDO;                                               // Si es un primer caracter no numerico es no reconocido.
+                    estado = DESCONOCIDO;                                              
                 i++;                    
                 break;
             
             case DECIMAL_NEGATIVO: //signo menos
-                if(valor[i] == '\0'){                   // ¿FIN? Hay un signo menos suelto?
+                if(valor[i] == '\0'){                   
                      estado = DESCONOCIDO;
                 }
-                else if(isdigit(valor[i]) && (valor[i] - diferenciaASCII) > 0) //no puedo tener -01. si tengo el '-' no le puede seguir '0'
+                else if(isdigit(valor[i]) && (valor[i] - diferenciaASCII) > 0) 
                     estado = CONSTANTE_DECIMAL;
                 else
                     estado = DESCONOCIDO;
@@ -130,7 +130,7 @@ void reconocer(char* valor, FILE* f_salida, int* cant_oct, int* cant_deci, int* 
             case CONSTANTE_DECIMAL:
                 if(valor[i] == '\0'){
                     (*cant_deci)++;
-                    fprintf(f_salida, "%-20s\t %d DECIMAL\n", valor, *cant_deci);                 // ¿FIN? 
+                    fprintf(f_salida, "%-20s\t %d DECIMAL\n", valor, *cant_deci);              
                     return;
                 }
                 else if(isdigit(valor[i]))
@@ -141,14 +141,14 @@ void reconocer(char* valor, FILE* f_salida, int* cant_oct, int* cant_deci, int* 
                 break;    
 
             case OCTAL_O_HEXA:
-                if(valor[i] == '\0'){                                                   // ¿FIN (caracter vacio)? 
+                if(valor[i] == '\0'){                                                   
                     (*cant_oct)++;
                     fprintf(f_salida, "%-20s\t %d OCTAL\n", valor, *cant_oct);
                     return;
                 }
-                else if(valor[i] == 'x' || valor[i] == 'X')                             // ¿LE SIGUE UNA X? ES HEXADECIMAL
+                else if(valor[i] == 'x' || valor[i] == 'X')                             
                     estado = CONSTANTE_HEXADECIMAL2;
-                else if(isdigit(valor[i]) && (valor[i] - diferenciaASCII) <= 7)                        // ¿EL CHAR NUMERAL ES MENOR QUE 8?
+                else if(isdigit(valor[i]) && (valor[i] - diferenciaASCII) <= 7)                       
                     estado = CONSTANTE_OCTAL;
                 else
                     estado = DESCONOCIDO;
@@ -156,7 +156,7 @@ void reconocer(char* valor, FILE* f_salida, int* cant_oct, int* cant_deci, int* 
                 break;
             
             case CONSTANTE_OCTAL:
-                if(valor[i] == '\0'){                                                  // ¿FIN? 
+                if(valor[i] == '\0'){                                               
                     (*cant_oct)++;
                     fprintf(f_salida, "%-20s\t %d OCTAL\n", valor, *cant_oct);
                     return;
@@ -179,7 +179,7 @@ void reconocer(char* valor, FILE* f_salida, int* cant_oct, int* cant_deci, int* 
             case CONSTANTE_HEXADECIMAL2:
                 if(valor[i] == '\0'){
                     (*cant_hexa)++;
-                    fprintf(f_salida, "%-20s\t %d HEXADECIMAL\n", valor, *cant_hexa);               // ¿FIN? 
+                    fprintf(f_salida, "%-20s\t %d HEXADECIMAL\n", valor, *cant_hexa);               
                     return;
                 }
                 else if(isxdigit(valor[i]))
@@ -189,7 +189,7 @@ void reconocer(char* valor, FILE* f_salida, int* cant_oct, int* cant_deci, int* 
                 i++;
                 break;
 
-            case DESCONOCIDO:                                                       // La cadena no es reconocida por el automata.
+            case DESCONOCIDO:                                                      
                 fprintf(f_salida, "%-20s\tNO RECONOCIDA\n", valor);              
                 return;
         }
